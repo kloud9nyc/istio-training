@@ -1,0 +1,22 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: envoy-filter-gateway
+  namespace: ab
+spec:
+  workloadLabels:
+    app: istio-ingressgateway
+  filters:
+  - listenerMatch:
+      portNumber: 80
+      listenerType: GATEWAY
+    filterName: envoy.lua
+    filterType: HTTP
+    insertPosition:
+      index: FIRST
+    filterConfig:
+      inlineCode: |
+        function envoy_on_request(request_handle)
+          local path= request_handle:headers():get(":path");
+          request_handle:logInfo(path);
+	end

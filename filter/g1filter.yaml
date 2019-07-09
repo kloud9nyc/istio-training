@@ -1,0 +1,22 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: envoy-filter
+  namespace: ab
+spec:
+  workloadLabels:
+  filters:
+  - listenerMatch:
+      listenerType: SIDECAR_INBOUND
+      listenerProtocol: HTTP
+    filterName: envoy.lua
+    filterType: HTTP
+    filterConfig:
+      inlineCode: |
+        function envoy_on_request(request_handle)
+          local path= request_handle:headers():get(":path");
+          if path~="/health" then
+          request_handle:headers():add("myheader-pod","superheader-pod");
+          request_handle:logWarn("path"..path);
+          end
+        end

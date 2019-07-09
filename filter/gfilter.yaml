@@ -1,0 +1,25 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: lua-test
+spec:
+  workloadLabels:
+  filters:
+    - listenerMatch:
+        listenerProtocol: HTTP
+        listenerType: GATEWAY
+      filterName: envoy.lua
+      filterType: HTTP
+      filterConfig:
+        inlineCode: |
+          function envoy_on_request(request_handle)
+           local request_handle = req;
+
+           local pathvalue = req:headers():get(":path")
+           if pathvalue then
+              req:logWarn(pathvalue)
+           end
+           else
+           req:logWarn("No Path Found")
+           end
+          end

@@ -1,0 +1,25 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: header-filter-workload-ab
+  namespace: ab
+spec:
+  workloadLabels:
+    app: myapp
+  filters:
+  - listenerMatch:
+      portNumber: 8080
+      listenerType: SIDECAR_INBOUND
+    filterName: envoy.lua
+    filterType: HTTP
+    insertPosition:
+      index: FIRST
+    filterConfig:
+      inlineCode: |
+        function envoy_on_request(request_handle)
+          local path= request_handle:headers():get(":path");
+          if path~="/health" then
+            request_handle:headers():add("nithya-pod","nithya-pod3");
+            request_handle:logWarn("pathnew "..path);
+          end
+        end

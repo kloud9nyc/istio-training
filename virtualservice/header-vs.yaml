@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: myservice-route
+  namespace: ab
+spec:
+  gateways:
+  - my-gateway
+  hosts:
+  - "*"
+  http:
+  - match:
+    - uri:
+        prefix: "/api/list"
+    route:
+    - destination:
+        host: my-service
+        port:
+          number: 8080
