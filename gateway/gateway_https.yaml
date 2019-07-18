@@ -1,0 +1,24 @@
+API Version:  networking.istio.io/v1alpha3
+Kind:         Gateway
+Spec:
+  Selector:
+    Istio:  ingressgateway
+  Servers:
+    Hosts:
+      *
+    Port:
+      Name:      http
+      Number:    80
+      Protocol:  HTTP
+    Tls:
+      Https Redirect:  true
+    Hosts:
+      *
+    Port:
+      Name:      https
+      Number:    443
+      Protocol:  HTTPS
+    Tls:
+      Mode:                SIMPLE
+      Private Key:         /etc/istio/ingressgateway-certs/tls.key
+      Server Certificate:  /etc/istio/ingressgateway-certs/tls.crt

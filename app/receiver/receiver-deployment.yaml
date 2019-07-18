@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: receiver-deployment
+  namespace: ab
+  labels:
+    app: receiver-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: receiver-app
+  template:
+    metadata:
+      labels:
+        app: receiver-app
+    spec:
+      containers:
+      - name: receiver-app
+        image: nbabusundaram/receiver
+        ports:
+        - containerPort: 80
