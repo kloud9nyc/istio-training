@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: receiver
+  name: receiver-service
   namespace: ab
   labels:
     app: receiver-app
