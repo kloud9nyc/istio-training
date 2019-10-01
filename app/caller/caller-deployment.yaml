@@ -17,6 +17,6 @@ spec:
     spec:
       containers:
       - name: callerapp
-        image: nbabusundaram/caller:v1
+        image: nbabusundaram/callv2
         ports:
         - containerPort: 80
